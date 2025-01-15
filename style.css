@@ -341,7 +341,7 @@ main {
       }
     }
 
-    #bookmark_btn {
+    #add_bookmark_btn {
       top: 50px;
       right: 80px;
       background-image: url(./images/bookmark_white.png);
