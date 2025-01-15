@@ -336,8 +336,10 @@ searchInput.addEventListener('keypress', async function (event) {
 //---MODAL---
 //모달 이벤트 : 해당 카드를 클릭하면 영화 상세정보 모달창 팝업
 //모달창 활성화 함수
+let selectedCard;
 const activeModal = function (movieCard) {
   //모달창에 카드 속성 가져오기
+  selectedCard = movieCard;
   const posterImg = movieCard.getAttribute('data-poster');
   const title = movieCard.getAttribute('data-title');
   const info = movieCard.getAttribute('data-info');
@@ -345,7 +347,7 @@ const activeModal = function (movieCard) {
   const star = movieCard.getAttribute('data-star');
   const bgImg = movieCard.getAttribute('data-image');
 
-  if (!posterImg || !title || !info || !releaseDate || !star || !bgImg) {
+  if (!posterImg && !title && !info && !releaseDate && !star && !bgImg) {
     console.error('Missing data for modal!');
     alert('아직 해당 영화의 정보가 업로드 되지 않았습니다!');
     return;
@@ -367,24 +369,21 @@ const activeModal = function (movieCard) {
 
   //모달창 활성화
   modalLayer.classList.add('activeModal');
-
-  //버튼 상태 확인 및 스타일 변경
-  const addBookmarkBtn = document.querySelector('#add_bookmark_btn');
-
-  //모달창 북마크 추가 버튼 이벤트 : 북마크 버튼 클릭시 해당 데이터를 로컬스토리지 북마크에 저장
-
-  addBookmarkBtn.addEventListener('click', handleBookmark);
-  // addBookmarkBtn.removeEventListener('click', handleBookmark);
-
-  const bookmarked = isBookmarked(movieCard);
-  if (!bookmarked) {
-    addBookmarkBtn.style.backgroundImage = `url(./images/bookmark_white.png)`;
-    addBookmarkBtn.style.opacity = '0.5';
-  } else {
-    addBookmarkBtn.style.backgroundImage = `url(./images/fullheart_yellow.png)`;
-    addBookmarkBtn.style.opacity = '1';
-  }
 };
+
+//모달창 북마크 리스너
+//모달창 북마크 추가 버튼 이벤트 : 북마크 버튼 클릭시 해당 데이터를 로컬스토리지 북마크에 저장
+const addBookmark = () => {
+  let bookBtn = document.querySelector('#add_bookmark_btn');
+
+  bookBtn.addEventListener('click', (e) => {
+    if (selectedCard) {
+      addToBookmark(selectedCard);
+    }
+  });
+};
+
+addBookmark();
 
 //모달창 비활성화 함수
 const closeModal = function (movieCard) {
@@ -427,25 +426,16 @@ const getMovieDataFromCard = function (movieCard) {
   return {
     id: movieCard.getAttribute('data-id'),
     title: movieCard.getAttribute('data-title'),
-    poster: movieCard.getAttribute('data-poster'),
-    info: movieCard.getAttribute('data-info'),
-    releaseDate: movieCard.getAttribute('data-release'),
-    star: movieCard.getAttribute('data-star'),
-    bgImg: movieCard.getAttribute('data-image'),
+    poster_path: movieCard.getAttribute('data-poster'),
+    overview: movieCard.getAttribute('data-info'),
+    release_date: movieCard.getAttribute('data-release'),
+    vote_average: movieCard.getAttribute('data-star'),
+    backdrop_path: movieCard.getAttribute('data-image'),
   };
-};
-
-const isBookmarked = function (movieCard) {
-  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-  const movieData = getMovieDataFromCard(movieCard);
-
-  return bookmarks.some((item) => item.id === movieData.title);
 };
 
 //북마크 추가 함수 : 로컬 스토리지에 저장
 const addToBookmark = function (movieCard) {
-  const addBookmarkBtn = document.querySelector('#add_bookmark_btn');
-
   //기존 로컬 스토리지에 저장된 북마크 데이터 불러오기
   const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
   const movieData = getMovieDataFromCard(movieCard);
@@ -458,25 +448,17 @@ const addToBookmark = function (movieCard) {
     (item) => item.id === movieData.id
   );
 
-  addBookmarkBtn.removeEventListener('click', handleBookmark);
+  // addBookmarkBtn.removeEventListener('click', handleBookmark);
 
   if (alreadyBookmarkedIdx === -1) {
     //로컬스토리지에 저장
     bookmarks.push(movieData);
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     alert('북마크에 추가되었습니다!');
-
-    // //버튼 이미지 (노란색 하트)업데이트
-    // addBookmarkBtn.style.backgroundImage = `url(./images/fullheart_yellow.png)`;
-    // addBookmarkBtn.style.opacity = '1';
   } else {
     bookmarks.splice(alreadyBookmarkedIdx, 1);
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     alert('북마크에서 영화가 삭제 되었습니다!');
-
-    // // 버튼 이미지 (흰색 빈 하트) 업데이트
-    // addBookmarkBtn.style.backgroundImage = `url(./images/bookmark_white.png)`;
-    // addBookmarkBtn.style.opacity = '0.7';
   }
 };
 
@@ -487,7 +469,8 @@ const renderBookmarks = function () {
 
   //북마크 목록이 없다면 메세지 띄우기
   if (bookmarks.length === 0) {
-    bookmarkContainer.innerHTML = '<p>아직 관심있는 영화가 없으시군요!</p>';
+    movieCardWrap.innerHTML =
+      '<p id="bookmark_text">아직 관심있는 영화가 없으시군요!</p>';
     return;
   }
 
@@ -496,8 +479,9 @@ const renderBookmarks = function () {
 };
 
 bookmarkBtn.addEventListener('click', () => {
-  //기존 영화 카드 지워주기
+  //기존 영화 카드 지워주기 + 더보기버튼 사라짐
   movieCardWrap.innerHTML = ``;
+  moreBtn.style.display = 'none';
 
   //북마크된 영화 렌더링
   renderBookmarks();
