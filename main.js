@@ -225,6 +225,7 @@ const renderMovie = function (data) {
     const info = movie.overview;
     const releaseDate = movie.release_date;
     const bgImg = movie.backdrop_path;
+    const id = movie.id;
 
     // 별점 계산
     const count = Math.floor(rate / 2) + (rate % 2 !== 0 ? 1 : 0);
@@ -235,6 +236,7 @@ const renderMovie = function (data) {
 
     // 영화 카드에 속성 추가
     movieCard.setAttribute('class', 'movie_card');
+    movieCard.setAttribute('data-id', id);
     movieCard.setAttribute('data-title', title);
     movieCard.setAttribute('data-poster', posterImg);
     movieCard.setAttribute('data-info', info);
@@ -249,15 +251,15 @@ const renderMovie = function (data) {
 
     movieCardWrap.appendChild(movieCard);
 
-    // 클릭 - 모달 이벤트 추가
+    // 클릭 - 모달 이벤트 실행
     movieCard.addEventListener('click', () => {
       activeModal(movieCard);
       closeModal(movieCard);
     });
+
+    return movieCard;
   });
 };
-
-('https://image.tmdb.org/t/p/w500${posterImg}');
 
 //---SEARCH---
 //검색창 이벤트 : 검색창에 영화 타이틀을 검색하면 해당 카드만 보이도록 정렬
@@ -334,8 +336,10 @@ searchInput.addEventListener('keypress', async function (event) {
 //---MODAL---
 //모달 이벤트 : 해당 카드를 클릭하면 영화 상세정보 모달창 팝업
 //모달창 활성화 함수
+let selectedCard;
 const activeModal = function (movieCard) {
   //모달창에 카드 속성 가져오기
+  selectedCard = movieCard;
   const posterImg = movieCard.getAttribute('data-poster');
   const title = movieCard.getAttribute('data-title');
   const info = movieCard.getAttribute('data-info');
@@ -343,7 +347,7 @@ const activeModal = function (movieCard) {
   const star = movieCard.getAttribute('data-star');
   const bgImg = movieCard.getAttribute('data-image');
 
-  if (!posterImg || !title || !info || !releaseDate || !star) {
+  if (!posterImg && !title && !info && !releaseDate && !star && !bgImg) {
     console.error('Missing data for modal!');
     alert('아직 해당 영화의 정보가 업로드 되지 않았습니다!');
     return;
@@ -351,14 +355,35 @@ const activeModal = function (movieCard) {
 
   //모달창에 데이터 반영
   modal.style.backgroundImage = `url(https://image.tmdb.org/t/p/w1280${bgImg})`;
-  modalTitle.innerText = title;
-  modalInfo.innerText = info;
-  modalDay.innerText = releaseDate;
-  modalStar.innerText = star;
+  // modalTitle.innerText = title;
+  // modalInfo.innerText = info;
+  // modalDay.innerText = releaseDate;
+  // modalStar.innerText = star;
+
+  const details = [title, info, releaseDate, star];
+
+  let modalDetails = document.querySelectorAll('.modal_detail');
+  modalDetails.forEach((detail, idx) => {
+    detail.innerText = details[idx];
+  });
 
   //모달창 활성화
   modalLayer.classList.add('activeModal');
 };
+
+//모달창 북마크 리스너
+//모달창 북마크 추가 버튼 이벤트 : 북마크 버튼 클릭시 해당 데이터를 로컬스토리지 북마크에 저장
+const addBookmark = () => {
+  let bookBtn = document.querySelector('#add_bookmark_btn');
+
+  bookBtn.addEventListener('click', (e) => {
+    if (selectedCard) {
+      addToBookmark(selectedCard);
+    }
+  });
+};
+
+addBookmark();
 
 //모달창 비활성화 함수
 const closeModal = function (movieCard) {
@@ -371,11 +396,8 @@ const closeModal = function (movieCard) {
 //---MORE MOVIE---
 //영화더보기 이벤트 : 더보기 버튼 클릭하면 페이지 1장씩 추가
 //각 카테고리 안에서 개별적으로 적용!
-
+//페이지 추가 함수
 async function addPage(activeLi, pageNum) {
-  console.log(activeLi);
-  console.log(pageNum);
-
   let addedUrl = `https://api.themoviedb.org/3/movie/${activeLi}?language=ko-KR&page=${pageNum}`;
 
   //영화 렌더링
@@ -383,6 +405,7 @@ async function addPage(activeLi, pageNum) {
   renderMovie(addData);
 }
 
+//더보기 버튼 클릭 이벤트
 moreBtn.addEventListener('click', () => {
   const activeLi = document.querySelector('.activeNavi').id;
   pageNum++;
@@ -396,4 +419,70 @@ moreBtn.addEventListener('click', () => {
 //북마크 페이지 : 삭제 기능 구현
 
 //북마크 변수
-const bookmarkBtn = document.querySelector('#bookmark');
+const bookmarkBtn = document.querySelector('#bookmark_btn');
+
+//movieCard에 있는 dataset 속성을 객체로 묶어 반환하는 함수 : 로컬스토리지에 넣기 위한 작업
+const getMovieDataFromCard = function (movieCard) {
+  return {
+    id: movieCard.getAttribute('data-id'),
+    title: movieCard.getAttribute('data-title'),
+    poster_path: movieCard.getAttribute('data-poster'),
+    overview: movieCard.getAttribute('data-info'),
+    release_date: movieCard.getAttribute('data-release'),
+    vote_average: movieCard.getAttribute('data-star'),
+    backdrop_path: movieCard.getAttribute('data-image'),
+  };
+};
+
+//북마크 추가 함수 : 로컬 스토리지에 저장
+const addToBookmark = function (movieCard) {
+  //기존 로컬 스토리지에 저장된 북마크 데이터 불러오기
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+  const movieData = getMovieDataFromCard(movieCard);
+  // console.log('moviecard', movieCard);
+
+  if (!movieData) return console.error('addbookmark에서 movieData 안불러짐');
+
+  //movieCard의 타이틀로 비교 >> 기존에 없으면 북마크배열에 추가 / 있으면 알람창 띄우기
+  const alreadyBookmarkedIdx = bookmarks.findIndex(
+    (item) => item.id === movieData.id
+  );
+
+  // addBookmarkBtn.removeEventListener('click', handleBookmark);
+
+  if (alreadyBookmarkedIdx === -1) {
+    //로컬스토리지에 저장
+    bookmarks.push(movieData);
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    alert('북마크에 추가되었습니다!');
+  } else {
+    bookmarks.splice(alreadyBookmarkedIdx, 1);
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    alert('북마크에서 영화가 삭제 되었습니다!');
+  }
+};
+
+//북마크 렌더링 함수
+const renderBookmarks = function () {
+  //로컬 스토리지에 저장된 북마크 데이터 불러오기
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+
+  //북마크 목록이 없다면 메세지 띄우기
+  if (bookmarks.length === 0) {
+    movieCardWrap.innerHTML =
+      '<p id="bookmark_text">아직 관심있는 영화가 없으시군요!</p>';
+    return;
+  }
+
+  //북마크된 영화 렌더링하기
+  renderMovie(bookmarks);
+};
+
+bookmarkBtn.addEventListener('click', () => {
+  //기존 영화 카드 지워주기 + 더보기버튼 사라짐
+  movieCardWrap.innerHTML = ``;
+  moreBtn.style.display = 'none';
+
+  //북마크된 영화 렌더링
+  renderBookmarks();
+});
