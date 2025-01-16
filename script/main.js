@@ -1,4 +1,4 @@
-import fetchMovies from './getData.js';
+import fetchMovies from './fetchMovies.js';
 
 //---DOM ELEMENTS---
 //url 관련 변수
