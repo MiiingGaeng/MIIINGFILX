@@ -1,4 +1,12 @@
-import { options } from './api.js';
+import { api_token } from './api.js';
+
+const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: `Bearer ${api_token}`,
+  },
+};
 
 //---FETCH---
 //영화 정보 가져오기
