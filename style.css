@@ -1,9 +1,5 @@
 @charset "utf-8";
 
-/* font */
-/* pretendard */
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
-
 /* reset */
 * {
   margin: 0;
@@ -50,6 +46,20 @@ header {
       font-size: 50px;
     }
 
+    #nowPlayingText {
+      position: absolute;
+      bottom: 500px;
+      left: 100px;
+      color: #fff;
+      width: 270px;
+      height: 30px;
+      line-height: 30px;
+      border-bottom: 1px solid #fff;
+      font-size: 20px;
+      text-shadow: #555 1px 0 10px;
+      opacity: 0;
+    }
+
     .random_title {
       position: absolute;
       bottom: 370px;
@@ -75,7 +85,7 @@ header {
         height: 50px;
         background: #ffbf10;
         color: #fff;
-        font-size: 15px;
+        font-size: 17px;
         border: none;
         border-radius: 20px;
         box-shadow: 1px 1px 10px #555;
@@ -92,7 +102,7 @@ header {
         height: 50px;
         background: #fff;
         color: #ffbf10;
-        font-size: 15px;
+        font-size: 17px;
         border: none;
         border-radius: 20px;
         opacity: 0.9;
@@ -256,10 +266,10 @@ main {
     #bookmark_text {
       display: inline-block;
       width: 100vw;
-      height: 500px;
+      height: 100vh;
       color: #fff;
       text-align: center;
-      line-height: 500px;
+      line-height: 100vh;
       font-size: 20px;
     }
   }
@@ -358,12 +368,12 @@ main {
       background-size: cover;
       transform: scale(0.95);
       transition: all 0.3s;
+    }
 
-      &:hover {
-        background-image: url(./images/fullheart_yellow.png);
-        background-size: cover;
-        opacity: 1;
-      }
+    #add_bookmark_btn.activeBooked {
+      background-image: url(./images/fullheart_yellow.png);
+      background-size: cover;
+      opacity: 1;
     }
 
     .modal_title {
@@ -378,7 +388,7 @@ main {
 
     .modal_info {
       position: absolute;
-      top: 300px;
+      top: 370px;
       left: 80px;
       width: 500px;
       font-size: 15px;

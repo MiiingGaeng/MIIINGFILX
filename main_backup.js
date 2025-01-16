@@ -94,6 +94,7 @@ const loadingTitle = document.querySelector('#loading_title');
 const slideBtns = document.querySelector('#button_wrap');
 const slidePlayBtn = document.querySelector('#play_btn');
 const slideInfoBtn = document.querySelector('#info_btn');
+const nowPlayingTitle = document.querySelector('#nowPlayingText');
 
 //이미지슬라이드 로직: setTimeOut 3초 뒤 이미지 전환
 //랜덤 이미지 생성
@@ -154,11 +155,14 @@ setInterval(async function () {
     imgSlideWrap.style.opacity = '0';
     randomImgTitle.style.transition = 'opacity 0.3s';
     randomImgTitle.style.opacity = '0';
+    nowPlayingTitle.style.transition = 'opacity 0.3s';
+    nowPlayingTitle.style.opacity = '0';
   };
   setTimeout(function () {
     imgSlideWrap.style.backgroundImage = `url(${newImgUrl})`;
     imgSlideWrap.style.opacity = '1';
     randomImgTitle.style.opacity = '1';
+    nowPlayingTitle.style.opacity = '1';
     //버튼도 등장!
     slideBtns.style.transition = 'opacity 0.3s';
     slideBtns.style.opacity = '1';
@@ -256,8 +260,6 @@ const renderMovie = function (data) {
       activeModal(movieCard);
       closeModal(movieCard);
     });
-
-    return movieCard;
   });
 };
 
@@ -306,8 +308,6 @@ searchBtn.addEventListener('click', async function (event) {
   //해당 데이터 렌더링
   await filterSearch(searchValue);
 
-  //검색창 비우기
-  searchInput.value = '';
   //메인화면 상단으로 이동
   window.scrollTo({ top: headerHeight, behavior: 'smooth' });
 });
@@ -326,8 +326,6 @@ searchInput.addEventListener('keypress', async function (event) {
     //해당 데이터 렌더링
     await filterSearch(searchValue);
 
-    //검색창 비우기
-    searchInput.value = '';
     //메인화면 상단으로 이동
     window.scrollTo({ top: headerHeight, behavior: 'smooth' });
   }
@@ -335,8 +333,9 @@ searchInput.addEventListener('keypress', async function (event) {
 
 //---MODAL---
 //모달 이벤트 : 해당 카드를 클릭하면 영화 상세정보 모달창 팝업
-//모달창 활성화 함수
+//북마크에서 사용할 변수
 let selectedCard;
+//모달창 활성화 함수
 const activeModal = function (movieCard) {
   //모달창에 카드 속성 가져오기
   selectedCard = movieCard;
@@ -369,21 +368,18 @@ const activeModal = function (movieCard) {
 
   //모달창 활성화
   modalLayer.classList.add('activeModal');
+
+  //버튼 디자인 변경
+  // 북마크 버튼 상태 동기화
+  const addBookmarkBtn = document.querySelector('#add_bookmark_btn');
+  if (isBookmarked(movieCard)) {
+    addBookmarkBtn.style.backgroundImage = `url(./images/fullheart_yellow.png)`;
+    addBookmarkBtn.style.opacity = '1';
+  } else {
+    addBookmarkBtn.style.backgroundImage = `url(./images/bookmark_white.png)`;
+    addBookmarkBtn.style.opacity = '0.7';
+  }
 };
-
-//모달창 북마크 리스너
-//모달창 북마크 추가 버튼 이벤트 : 북마크 버튼 클릭시 해당 데이터를 로컬스토리지 북마크에 저장
-const addBookmark = () => {
-  let bookBtn = document.querySelector('#add_bookmark_btn');
-
-  bookBtn.addEventListener('click', (e) => {
-    if (selectedCard) {
-      addToBookmark(selectedCard);
-    }
-  });
-};
-
-addBookmark();
 
 //모달창 비활성화 함수
 const closeModal = function (movieCard) {
@@ -418,8 +414,22 @@ moreBtn.addEventListener('click', () => {
 //서치바 : 북마크 버튼을 클릭하면 북마크에 추가된 리스트 볼 수 있음
 //북마크 페이지 : 삭제 기능 구현
 
+//모달창 북마크 리스너
+//모달창 북마크 추가 버튼 이벤트 : 북마크 버튼 클릭시 해당 데이터를 로컬스토리지 북마크에 저장
+const addBookmark = () => {
+  let bookBtn = document.querySelector('#add_bookmark_btn');
+
+  bookBtn.addEventListener('click', (e) => {
+    if (selectedCard) {
+      addToBookmark(selectedCard);
+    }
+  });
+};
+
+addBookmark();
+
 //북마크 변수
-const bookmarkBtn = document.querySelector('#bookmark_btn');
+const bookmarkBtnOnTop = document.querySelector('#bookmark_btn');
 
 //movieCard에 있는 dataset 속성을 객체로 묶어 반환하는 함수 : 로컬스토리지에 넣기 위한 작업
 const getMovieDataFromCard = function (movieCard) {
@@ -439,7 +449,6 @@ const addToBookmark = function (movieCard) {
   //기존 로컬 스토리지에 저장된 북마크 데이터 불러오기
   const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
   const movieData = getMovieDataFromCard(movieCard);
-  // console.log('moviecard', movieCard);
 
   if (!movieData) return console.error('addbookmark에서 movieData 안불러짐');
 
@@ -448,18 +457,36 @@ const addToBookmark = function (movieCard) {
     (item) => item.id === movieData.id
   );
 
-  // addBookmarkBtn.removeEventListener('click', handleBookmark);
+  //버튼 변수
+  const addBookmarkBtn = document.querySelector('#add_bookmark_btn');
 
   if (alreadyBookmarkedIdx === -1) {
     //로컬스토리지에 저장
     bookmarks.push(movieData);
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     alert('북마크에 추가되었습니다!');
+
+    // 버튼 스타일 업데이트 (노란색 하트)
+    addBookmarkBtn.style.backgroundImage = `url(./images/fullheart_yellow.png)`;
+    addBookmarkBtn.style.opacity = '1';
   } else {
+    //로컬스토리지에서 삭제
     bookmarks.splice(alreadyBookmarkedIdx, 1);
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     alert('북마크에서 영화가 삭제 되었습니다!');
+
+    // 버튼 스타일 업데이트 (흰색 하트)
+    addBookmarkBtn.style.backgroundImage = `url(./images/bookmark_white.png)`;
+    addBookmarkBtn.style.opacity = '0.7';
   }
+};
+
+//북마크 판별 함수
+const isBookmarked = function (movieCard) {
+  const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
+  const movieData = getMovieDataFromCard(movieCard);
+
+  return bookmarks.some((item) => item.id === movieData.id);
 };
 
 //북마크 렌더링 함수
@@ -478,11 +505,15 @@ const renderBookmarks = function () {
   renderMovie(bookmarks);
 };
 
-bookmarkBtn.addEventListener('click', () => {
+//서치바 북마크 클릭 이벤트 : 북마크된 영화 렌더링
+bookmarkBtnOnTop.addEventListener('click', () => {
   //기존 영화 카드 지워주기 + 더보기버튼 사라짐
   movieCardWrap.innerHTML = ``;
   moreBtn.style.display = 'none';
 
   //북마크된 영화 렌더링
   renderBookmarks();
+
+  //스크롤 올려줌
+  window.scrollTo({ top: headerHeight, behavior: 'smooth' });
 });
