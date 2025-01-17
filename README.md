@@ -16,5 +16,7 @@ TMDB open API를 사용해 해당 카테고리별 영화를 보여주고, 검색
 
 ## 트러블 슈팅🧑‍💻
 [TroubleShooting 1 : 검색 기능](https://velog.io/@miiing_gaeng/%EC%98%81%ED%99%94-%EA%B2%80%EC%83%89-%EC%82%AC%EC%9D%B4%ED%8A%B8-TroubleShooting-1-%EA%B2%80%EC%83%89-%EA%B8%B0%EB%8A%A5)
+
 [TroubleShooting 2 : 더보기 기능](https://velog.io/@miiing_gaeng/%EC%98%81%ED%99%94-%EA%B2%80%EC%83%89-%EC%82%AC%EC%9D%B4%ED%8A%B8-TroubleShooting-2-%EB%8D%94%EB%B3%B4%EA%B8%B0-%EA%B8%B0%EB%8A%A5)
+
 [TroubleShooting 3 : 북마크 기능](https://velog.io/@miiing_gaeng/%EC%98%81%ED%99%94-%EA%B2%80%EC%83%89-%EC%82%AC%EC%9D%B4%ED%8A%B8-TroubleShooting-3-%EB%B6%81%EB%A7%88%ED%81%AC-%EA%B8%B0%EB%8A%A5)
