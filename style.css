@@ -27,7 +27,7 @@ body {
 /* header */
 header {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 75px);
   background: #000;
 
   #imgslide_wrap {
@@ -43,28 +43,28 @@ header {
       left: 50%;
       transform: translate(-50%, -50%) skew(-15deg);
       color: #ffbf10;
-      font-size: 50px;
+      font-size: 30px;
     }
 
     #nowPlayingText {
       position: absolute;
-      bottom: 500px;
+      bottom: 380px;
       left: 100px;
       color: #fff;
-      width: 270px;
+      width: 220px;
       height: 30px;
       line-height: 30px;
       border-bottom: 1px solid #fff;
-      font-size: 20px;
+      font-size: 15px;
       text-shadow: #555 1px 0 10px;
       opacity: 0;
     }
 
     .random_title {
       position: absolute;
-      bottom: 370px;
+      bottom: 290px;
       left: 100px;
-      font-size: 70px;
+      font-size: 40px;
       color: #fff;
       text-shadow: #555 1px 0 10px;
       opacity: 0;
@@ -76,18 +76,18 @@ header {
       display: flex;
       gap: 15px;
       position: absolute;
-      bottom: 300px;
+      bottom: 230px;
       left: 100px;
       opacity: 0;
 
       #play_btn {
-        width: 120px;
-        height: 50px;
+        width: 90px;
+        height: 40px;
         background: #ffbf10;
         color: #fff;
-        font-size: 17px;
+        font-size: 13px;
         border: none;
-        border-radius: 20px;
+        border-radius: 15px;
         box-shadow: 1px 1px 10px #555;
         transition: all 0.3s;
 
@@ -98,13 +98,13 @@ header {
       }
 
       #info_btn {
-        width: 150px;
-        height: 50px;
+        width: 120px;
+        height: 40px;
         background: #fff;
         color: #ffbf10;
-        font-size: 17px;
+        font-size: 13px;
         border: none;
-        border-radius: 20px;
+        border-radius: 15px;
         opacity: 0.9;
         box-shadow: 1px 1px 10px #555;
         transition: all 0.3s;
@@ -129,7 +129,7 @@ main {
   /* searchbar */
   #search_wrap {
     width: 100%;
-    height: 100px;
+    height: 75px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -142,10 +142,10 @@ main {
 
     #home_logo {
       width: 100px;
-      height: 50px;
-      font-size: 30px;
+      height: 75px;
+      font-size: 20px;
       text-align: center;
-      line-height: 50px;
+      line-height: 75px;
       color: #ffbf10;
       cursor: pointer;
       font-weight: bold;
@@ -158,21 +158,21 @@ main {
     }
 
     #search_input {
-      width: 900px;
-      height: 50px;
-      border-radius: 20px;
+      width: 700px;
+      height: 35px;
+      border-radius: 15px;
       padding: 0 20px;
-      font-size: 17px;
+      font-size: 12px;
       border: none;
       margin-right: 20px;
     }
 
     .header_btn {
-      width: 100px;
-      height: 50px;
-      font-size: 17px;
+      width: 75px;
+      height: 35px;
+      font-size: 12px;
       background: #fff;
-      border-radius: 20px;
+      border-radius: 15px;
       cursor: pointer;
       border: none;
       transition: background 0.3s;
@@ -190,10 +190,10 @@ main {
   /* navi */
   #nav_wrap {
     width: 100%;
-    height: 50px;
-    padding: 30px;
+    height: 30px;
+    padding: 20px;
     position: sticky;
-    top: 100px;
+    top: 75px;
     z-index: 51;
     background: rgba(0, 0, 0, 0.7);
     border-bottom: 1px solid #fff;
@@ -202,7 +202,7 @@ main {
 
     nav {
       width: 95%;
-      height: 50px;
+      height: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -215,7 +215,7 @@ main {
 
         li {
           color: #fff;
-          font-size: 20px;
+          font-size: 15px;
           font-weight: 600;
           width: 200px;
           height: 30px;
@@ -241,10 +241,10 @@ main {
   #movie_card_wrap {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(400px 1fr));
+    grid-template-columns: repeat(auto-fill, 250px);
+    grid-template-rows: repeat(auto-fill, minmax(400px, auto));
     gap: 20px;
-    padding: 20px;
+    padding: 30px;
 
     .movie_card {
       display: flex;
@@ -285,8 +285,9 @@ main {
     transform: translateX(-50%);
     width: 90%;
     text-align: center;
-    font-size: 20px;
-    line-height: 70px;
+    font-size: 15px;
+    line-height: 40px;
+    padding-top: 10px;
     cursor: pointer;
     border-top: 1px solid #fff;
     transition: color 0.3s;
@@ -314,8 +315,8 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 1200px;
-    height: 800px;
+    width: 900px;
+    height: 600px;
     padding: 20px;
     display: flex;
     justify-content: space-around;
@@ -324,14 +325,13 @@ main {
   }
 
   .modal_text_wrap {
-    width: 1100px;
-    height: 700px;
+    width: 830px;
+    height: 530px;
     background: rgba(0, 0, 0, 0.4);
     position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 50px;
     z-index: 55;
     color: #fff;
     display: flex;
@@ -343,13 +343,13 @@ main {
       border: none;
       cursor: pointer;
       opacity: 0.5;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
 
     #close_btn {
-      top: 50px;
-      right: 30px;
+      top: 40px;
+      right: 20px;
       background-image: url(./images/close_white.png);
       background-size: cover;
       transition: all 0.3s;
@@ -362,8 +362,8 @@ main {
     }
 
     #add_bookmark_btn {
-      top: 50px;
-      right: 80px;
+      top: 40px;
+      right: 60px;
       background-image: url(./images/bookmark_white.png);
       background-size: cover;
       transform: scale(0.95);
@@ -378,20 +378,20 @@ main {
 
     .modal_title {
       position: absolute;
-      top: 50px;
-      left: 80px;
+      top: 30px;
+      left: 60px;
       width: 700px;
       height: 70px;
-      font-size: 30px;
+      font-size: 20px;
       line-height: 70px;
     }
 
     .modal_info {
       position: absolute;
-      top: 370px;
-      left: 80px;
-      width: 500px;
-      font-size: 15px;
+      top: 270px;
+      left: 60px;
+      width: 375px;
+      font-size: 11px;
       border-top: 1px solid #fff;
       padding-top: 30px;
       margin: 10px 0;
@@ -399,16 +399,16 @@ main {
 
     .modal_day {
       position: absolute;
-      top: 590px;
-      left: 80px;
-      font-size: 20px;
+      top: 435px;
+      left: 60px;
+      font-size: 15px;
     }
 
     .modal_star {
       position: absolute;
-      top: 610px;
-      left: 80px;
-      font-size: 30px;
+      top: 450px;
+      left: 57px;
+      font-size: 25px;
       color: #ffbf10;
     }
   }
@@ -421,7 +421,7 @@ main {
 /* footer */
 footer {
   width: 100%;
-  height: 200px;
+  height: 150px;
   border-top: 1px solid #fff;
   display: flex;
   flex-direction: column;
@@ -431,7 +431,7 @@ footer {
   #footer_wrap {
     width: 100%;
     height: 100%;
-    padding: 40px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -439,7 +439,7 @@ footer {
     #copy {
       display: inline-block;
       height: 20px;
-      font-size: 17px;
+      font-size: 12px;
       line-height: 20px;
       color: #fff;
     }
@@ -449,12 +449,12 @@ footer {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      margin-top: 30px;
+      margin-top: 20px;
 
       #github {
         display: inline-block;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         cursor: pointer;
         transition: transform 0.3s;
 
@@ -470,8 +470,8 @@ footer {
 
       #velog {
         display: inline-block;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         border: 1px solid #fff;
         cursor: pointer;
