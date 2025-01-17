@@ -6,6 +6,7 @@
 TMDB open API를 사용해 해당 카테고리별 영화를 보여주고, 검색 및 북마크 기능을 제공합니다.
 아직 반응형 디자인이 적용되지 않아, PC 환경에 최적화되어 있으며 모바일 환경은 지원하지 않습니다.
 
+## 프로젝트 기능⚙️
 * html, css, 바닐라 javaScript로 구성되었습니다.
 * TMDB open API의 `movie-popular`, `movie-now playing`, `movie-top rated`, `movie-up coming`, `search-movie` API를 활용했습니다.
 * 한국어를 제공합니다.
