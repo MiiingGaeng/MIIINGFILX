@@ -1,10 +1,28 @@
 # WELCOME TO MINGFILX🍿
+## 프로젝트 미리보기🎥
+* Header
+<img width="1440" alt="Screenshot 2025-01-17 at 10 45 02 AM" src="https://github.com/user-attachments/assets/6bf5d874-4e10-4f64-a623-f74ec9e6279e" />
+
+* 영화 목록
+<img width="1440" alt="Screenshot 2025-01-17 at 10 43 26 AM" src="https://github.com/user-attachments/assets/2d5d3c4f-dd9c-439a-a3f0-ad6e8069ad1f" />
+
+* 영화 정보 모달창
+<img width="1440" alt="Screenshot 2025-01-17 at 10 43 39 AM" src="https://github.com/user-attachments/assets/f8fc521f-c043-479e-a4f7-45da0c408f04" />
+
+* 영화 검색
+<img width="1440" alt="Screenshot 2025-01-17 at 10 44 29 AM" src="https://github.com/user-attachments/assets/da5907e2-32a8-4d1d-809a-34aeb8fb8b25" />
+
+* 북마크
+<img width="1440" alt="Screenshot 2025-01-17 at 10 43 32 AM" src="https://github.com/user-attachments/assets/fefd8d00-4a37-45db-b933-8828caab0a78" />
+
+
 
 ## 프로젝트 소개📄
 **📆 프로젝트 기간 : 2025.01.08 ~ 2025.01.17**
 
 TMDB open API를 사용해 해당 카테고리별 영화를 보여주고, 검색 및 북마크 기능을 제공합니다.
-아직 반응형 디자인이 적용되지 않아, PC 환경에 최적화되어 있으며 모바일 환경은 지원하지 않습니다.
+
+아직 반응형 디자인이 완벽하게 적용되지 않아, PC 환경에 최적화되어 있으며 모바일 환경은 지원하지 않습니다.
 
 ## 프로젝트 기능⚙️
 * html, css, 바닐라 javaScript로 구성되었습니다.
